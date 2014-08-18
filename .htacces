@@ -1,0 +1,242 @@
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP:VIA}                 !^$ [OR]
+RewriteCond %{HTTP:FORWARDED}           !^$ [OR]
+RewriteCond %{HTTP:USERAGENT_VIA}       !^$ [OR]
+RewriteCond %{HTTP:X_FORWARDED_FOR}     !^$ [OR]
+RewriteCond %{HTTP:PROXY_CONNECTION}    !^$ [OR]
+RewriteCond %{HTTP:XPROXY_CONNECTION}   !^$ [OR]
+RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+RewriteCond %{HTTP:HTTP_CLIENT_IP}      !^$
+RewriteRule ^(.*)$ - [F]
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+RewriteCond %{HTTP_USER_AGENT} (havij|libwww-perl|wget|python|nikto|curl|scan|java|winhttp|clshttp|loader) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%22|%27|%28|%3C|%3E|%00).*(libwww-perl|wget|python|nikto|curl|scan|java|winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC,OR]
+RewriteCond %{THE_REQUEST} \?\ HTTP/ [NC,OR]
+RewriteCond %{THE_REQUEST} \/\*\ HTTP/ [NC,OR]
+RewriteCond %{THE_REQUEST} etc/passwd [NC,OR]
+RewriteCond %{THE_REQUEST} cgi-bin [NC,OR]
+RewriteCond %{THE_REQUEST} (%0A|%0D|\\r|\\n) [NC,OR]
+RewriteCond %{REQUEST_URI} owssvr\.dll [NC,OR]
+RewriteCond %{HTTP_REFERER} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{HTTP_REFERER} \.opendirviewer\. [NC,OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [NC,OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [NC,OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC,OR]
+RewriteCond %{QUERY_STRING} (\.\./|%2e%2e%2f|%2e%2e/|\.\.%2f|%2e\.%2f|%2e\./|\.%2e%2f|\.%2e/) [NC,OR]
+RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+RewriteCond %{QUERY_STRING} http\: [NC,OR] 
+RewriteCond %{QUERY_STRING} https\: [NC,OR]
+RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*embed.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^e]*e)+mbed.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*object.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^o]*o)+bject.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR] 
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} ^.*(\(|\)|<|>|%3c|%3e).* [NC,OR]
+RewriteCond %{QUERY_STRING} ^.*(\x00|\x04|\x08|\x0d|\x1b|\x20|\x3c|\x3e|\x7f).* [NC,OR]
+RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
+RewriteCond %{QUERY_STRING} (\.{1,}/)+(motd|etc|bin) [NC,OR]
+RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|>|'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} \-[sdcr].*(allow_url_include|allow_url_fopen|safe_mode|disable_functions|auto_prepend_file) [NC,OR]
+RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
+RewriteCond %{QUERY_STRING} (sp_executesql) [NC]
+RewriteCond %{HTTP_USER_AGENT} ^w3af.sourceforge.net [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} dirbuster [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} nikto [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} SF [OR]
+RewriteCond %{HTTP_USER_AGENT} sqlmap [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} fimap [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} nessus [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} whatweb [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Openvas [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} jbrofuzz [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} libwhisker [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} webshag [NC,OR]
+RewriteCond %{HTTP:Acunetix-Product} ^WVS
+RewriteRule ^.* http://127.0.0.1/ [R=301,L]
+RewriteCond %{HTTP_USER_AGENT} Wget [OR]
+RewriteCond %{HTTP_USER_AGENT} CherryPickerSE [OR]
+RewriteCond %{HTTP_USER_AGENT} CherryPickerElite [OR]
+RewriteCond %{HTTP_USER_AGENT} EmailCollector [OR]
+RewriteCond %{HTTP_USER_AGENT} EmailSiphon [OR]
+RewriteCond %{HTTP_USER_AGENT} EmailWolf [OR]
+RewriteCond %{HTTP_USER_AGENT} ExtractorPro
+RewriteRule ^.* - [F,L]
+RewriteCond %{HTTP_USER_AGENT} ^BlackWidow [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Bot\ mailto:craftbot@yahoo.com [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ChinaClaw [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Custo [OR]
+RewriteCond %{HTTP_USER_AGENT} ^DISCo [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Download\ Demon [OR]
+RewriteCond %{HTTP_USER_AGENT} ^eCatch [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EirGrabber [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EmailSiphon [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EmailWolf [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Express\ WebPictures [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ExtractorPro [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EyeNetIE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^FlashGet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GetRight [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GetWeb! [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Go!Zilla [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Go-Ahead-Got-It [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GrabNet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Grafula [OR]
+RewriteCond %{HTTP_USER_AGENT} ^HMView [OR]
+RewriteCond %{HTTP_USER_AGENT} HTTrack [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Stripper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Sucker [OR]
+RewriteCond %{HTTP_USER_AGENT} Indy\ Library [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^InterGET [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Internet\ Ninja [OR]
+RewriteCond %{HTTP_USER_AGENT} ^JetCar [OR]
+RewriteCond %{HTTP_USER_AGENT} ^JOC\ Web\ Spider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^larbin [OR]
+RewriteCond %{HTTP_USER_AGENT} ^LeechFTP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Mass\ Downloader [OR]
+RewriteCond %{HTTP_USER_AGENT} ^MIDown\ tool [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Mister\ PiX [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Navroad [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NearSite [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetAnts [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetSpider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Net\ Vampire [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetZIP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Octopus [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Explorer [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Navigator [OR]
+RewriteCond %{HTTP_USER_AGENT} ^PageGrabber [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Papa\ Foto [OR]
+RewriteCond %{HTTP_USER_AGENT} ^pavuk [OR]
+RewriteCond %{HTTP_USER_AGENT} ^pcBrowser [OR]
+RewriteCond %{HTTP_USER_AGENT} ^RealDownload [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ReGet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SiteSnagger [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SmartDownload [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SuperBot [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SuperHTTP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Surfbot [OR]
+RewriteCond %{HTTP_USER_AGENT} ^tAkeOut [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Teleport\ Pro [OR]
+RewriteCond %{HTTP_USER_AGENT} ^VoidEYE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Image\ Collector [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Sucker [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebAuto [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebCopier [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebFetch [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebGo\ IS [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebLeacher [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebReaper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebSauger [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Website\ eXtractor [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Website\ Quester [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebStripper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebWhacker [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebZIP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Wget [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Widow [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WWWOFFLE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Xaldon\ WebSpider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Zeus
+RewriteRule ^.* - [F,L]
+</IfModule>
+<FilesMatch "^(wp-comments-post\.php\wp-config\.php|php\.ini|php5\.ini|readme\.html|bb-config\.php)">
+Order Allow,Deny
+Deny from 46.119.35.
+Deny from 46.119.45.
+Deny from 91.236.74.
+Deny from 93.182.147.
+Deny from 93.182.187.
+Deny from 94.27.72.
+Deny from 94.27.75.
+Deny from 94.27.76.
+Deny from 193.105.210.
+Deny from 195.43.128.
+Deny from 198.144.105.
+Deny from 199.15.234.
+Deny from 91.200.13.87.
+Deny from 49.74.155.215.
+Deny from 81.214.175.228.
+Deny from 78.178.240.58.
+Deny from 78.173.179.91.
+Deny from 82.200.168.83.
+Deny from 212.156.45.238.
+Deny from 78.178.243.76.
+Deny from 78.191.47.181.
+Deny from 78.187.238.107.
+Deny from 188.190.100.50.
+
+Allow from all
+</FilesMatch>
+
+# Enable GZIP
+<ifmodule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</ifmodule>
+
+# Expires Headers - 2678400s = 31 days
+<ifmodule mod_expires.c>
+  Header set Connection keep-alive
+  ExpiresActive On
+  ExpiresDefault "access plus 2678400 seconds"
+  ExpiresByType text/html "access plus 7200 seconds"
+  ExpiresByType image/gif "access plus 2678400 seconds"
+  ExpiresByType image/jpeg "access plus 2678400 seconds"
+  ExpiresByType image/png "access plus 2678400 seconds"
+  ExpiresByType text/css "access plus 750000 seconds"
+  ExpiresByType text/javascript "access plus 2678400 seconds"
+  ExpiresByType application/x-javascript "access plus 2678400 seconds"
+  
+</ifmodule>
+ 
+# Cache Headers
+<ifmodule mod_headers.c>
+  # Cache specified files for 31 days
+  <filesmatch "\.(ico|flv|jpg|jpeg|png|gif|css|swf)$">
+  Header set Cache-Control "max-age=2678400, public"
+  </filesmatch>
+  # Cache HTML files for a couple hours
+  <filesmatch "\.(html|htm)$">
+  Header set Cache-Control "max-age=7200, private, must-revalidate"
+  </filesmatch>
+  # Cache PDFs for a day
+  <filesmatch "\.(pdf)$">
+  Header set Cache-Control "max-age=86400, public"
+  </filesmatch>
+  # Cache Javascripts for 31 days
+  <filesmatch "\.(js)$">
+  Header set Cache-Control "max-age=2678400, private"
+  </filesmatch>
+</ifmodule>
+<Files .htaccess>
+order deny,allow
+deny from all
+</Files> 
+<Files wp-config.php>
+order allow,deny
+deny from all
+</Files> 
+# END WordPress
